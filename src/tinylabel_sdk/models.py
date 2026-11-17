@@ -119,6 +119,15 @@ class LabelInput:
 
 
 @dataclass(frozen=True)
+class TextLayout:
+    font_sizes_px: tuple[int, ...]
+    line_count: int
+    shrunk: bool
+    area_box_px: tuple[int, int, int, int]
+    vertical_align: str
+
+
+@dataclass(frozen=True)
 class PreparedLabel:
     label_id: str
     rows: tuple[bytes, ...]
@@ -127,6 +136,7 @@ class PreparedLabel:
     canvas_height: int
     content_box: tuple[int, int, int, int]
     digest: str
+    text_layout: TextLayout | None = None
 
 
 @dataclass(frozen=True)
@@ -149,7 +159,9 @@ class BatchPlan:
                 "media": asdict(self.media), "calibration": asdict(self.calibration), "options": asdict(self.options),
                 "labels": [{"label_id": x.label_id, "bitmap_rows": len(x.rows),
                             "canvas_px": [x.canvas_width, x.canvas_height], "content_box_px": list(x.content_box),
-                            "digest": x.digest} for x in self.labels]}
+                            "digest": x.digest,
+                            **({"text_layout": asdict(x.text_layout)} if x.text_layout is not None else {})}
+                           for x in self.labels]}
 
     def save_previews(self, directory: str | Path) -> list[Path]:
         target = Path(directory)

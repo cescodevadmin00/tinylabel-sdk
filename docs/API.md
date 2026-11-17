@@ -9,6 +9,13 @@ Imports below come from `tinylabel_sdk` unless stated otherwise. Methods that to
 | `PrintOptions(darkness=5, energy=8000, speed=10)` | Darkness 1–5; energy/speed are protocol values, not calibrated SI units / Oscuridad 1–5; energía/velocidad del protocolo |
 | `DrainPolicy(...)` | Passive waiting assumptions, not completion proof / Supuestos de espera, sin prueba de entrega |
 | `LabelInput(image, label_id)` | Path, encoded `bytes`, or Pillow image plus business ID / Ruta, bytes o imagen Pillow con ID |
+| `TextStyle(font_size_mm=3, font_path=None, align="center", line_spacing_mm=0.5, wrap=True, bold=False)` | Text block typography; bundled normal/bold face by default / Tipografía por bloque |
+| `TextBlock(text, style=TextStyle(), gap_after_mm=0.75)` | Literal text plus independent style / Texto literal y estilo independiente |
+| `TextLabel(label_id, blocks, vertical_align="center", overflow="error", min_font_size_mm=1.5)` | Text label; `blocks` is a sequence of `TextBlock` / Etiqueta de texto |
+| `TextLabel.from_text(text, label_id, *, style=None, **label_settings)` | Single-block convenience / Atajo para bloque único |
+| `format_text(template, fields)` | Optional flat `{field}` substitution, preformatted strings only / Sustitución plana con cadenas preformateadas |
+| `prepare_text_batch(labels, media=None, *, calibration=None, options=None)` | Text-only helper; returns ordinary `BatchPlan` / Preparación de texto |
+| `load_text_labels(path)` | Schema 1 UTF-8 JSON definitions; font paths relative to JSON / Definiciones JSON |
 | `prepare_batch(images, media=None, *, calibration=None, options=None)` | Pure planning; returns `BatchPlan`; no hardware / Preparación sin hardware |
 | `BatchPlan.save_previews(directory)` | Numbered PNGs + `plan.json`; returns PNG paths / PNG numerados + plan |
 | `BatchPlan.summary()` / `.digest` | JSON-compatible plan summary / SHA-256 digest / Resumen y huella |
@@ -50,6 +57,8 @@ DrainPolicy(
 Positive X is right; positive Y is down. Default max wait after send is `max(60, travel_mm / minimum_print_speed_mm_s + 30)` seconds. `max_wait_s` overrides that deadline, not the required estimated duration. / X positivo va a la derecha; Y positivo hacia abajo. El plazo se calcula después del envío. `max_wait_s` cambia el plazo, no el recorrido estimado exigido.
 
 Batch limits / Límites: 1–500 labels, 64 MiB encoded payload, 25 megapixels per source image, unique nonempty label IDs up to 256 characters, stable job ID up to 128 characters. Height ≤500 mm and gap ≤50 mm are software configuration limits, not hardware compatibility claims. / Son límites de software, no especificaciones del hardware.
+
+In 0.2.0, `prepare_batch` also accepts `TextLabel` in mixed image/text batches. Text limits: 100 blocks and 10000 characters per label. Empty/whitespace-only text labels are rejected. Text summaries include resolved `text_layout` (font sizes in pixels, line count, shrink flag, area, vertical alignment). `PreparedLabel.text_layout` is optional; image labels have `None`. See [English text manual](TEXT.en.md) / [manual de texto](TEXT.es.md) for all behavior and JSON examples. Existing print-session/receipt APIs are unchanged.
 
 ## Errors / Errores
 

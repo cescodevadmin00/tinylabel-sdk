@@ -4,6 +4,14 @@
 
 This document is an implementation brief for an agent integrating TinyLabel into an existing label management system. Keep business templates, inventory rules, and user permissions in the host application. Use the SDK for image planning, a single printer connection, and durable attempted-job receipts. The current adapter is U1 Classic Bluetooth only; read [compatibility](COMPATIBILITY.md).
 
+## Text integration added in 0.2.0
+
+The host can read Excel externally, normalize values into strings and create `TextLabel`/`TextBlock` objects, then call `prepare_text_batch`. Or compose final text completely outside the SDK. `format_text` is an optional flat-string template helper, not a spreadsheet reader or expression evaluator. Preserve leading zeros, currency/date formatting and missing-value policy in the host. See the complete [text integration guide](TEXT.en.md) and [external fields example](../examples/text_from_fields.py).
+
+Feed the resulting `BatchPlan` to the existing persistent `LabelPrinter.print_batch`; do not create a new connection/reset for text. For mixed content, `prepare_batch` accepts both `TextLabel` and `LabelInput`. Native text shares image calibration and pitch, with per-label advance calculated from actual rendered rows. Do not hard-code image row counts for text. CLI clients can use `preview-text`/`print-text` with the [JSON example](../examples/text_labels.json).
+
+Before sending, validate all text fits, inspect resolved `text_layout` metadata and previews, and retain the immutable text definition/font versions in application audit data. The journal does not store source text. Default overflow rejects; explicit `shrink` enforces a minimum size. Missing fields/invalid fonts/overflow must surface before connecting. Text layout tests and existing image regression tests run together; physical acceptance remains required.
+
 ## Architecture and ownership
 
 ```mermaid

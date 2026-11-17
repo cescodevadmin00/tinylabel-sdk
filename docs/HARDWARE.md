@@ -2,6 +2,8 @@
 
 ## English
 
+Version 0.2.0 adds native-raster text planning on the same geometry/pitch path as images. No new physical hardware run was performed for text. This software addition does not change the evidence or completion limitations below.
+
 The initial calibration comes from earlier experiments with one U1 printer, firmware reported as `1.0.1E`, controlled from a Windows PC over Bluetooth Classic. It is a starting point for that setup, not a factory specification or a guarantee for all U1 devices.
 
 For 50 × 25 mm die-cut labels with a measured 2 mm gap:
@@ -25,6 +27,8 @@ This SDK removes those additional final movements/queries, keeps initialization 
 There is no verified per-label physical completion acknowledgment for this adapter. `transmitted_unconfirmed`, `position_after="expected_next_label_start"`, and elapsed waiting time are software estimates. They are never sensor measurements or delivery proof. No hardware printing is performed by CI or package builds.
 
 ## Español
+
+La versión 0.2.0 añade preparación de texto ráster nativo sobre la misma geometría/paso de imágenes. No se realizó otra impresión física para texto. La función de software no cambia la evidencia ni las limitaciones de entrega descritas aquí.
 
 La calibración inicial procede de experimentos anteriores con una U1, firmware reportado `1.0.1E`, desde Windows por Bluetooth Classic. Es un punto de partida para esa unidad; no es una especificación del fabricante ni garantiza todas las variantes U1.
 

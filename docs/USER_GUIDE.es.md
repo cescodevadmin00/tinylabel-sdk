@@ -10,6 +10,8 @@ La versión actual es experimental. Consulta [compatibilidad](COMPATIBILITY.md) 
 
 ## 2. Seleccionar papel e imágenes
 
+**Texto en 0.2.0:** consulta [etiquetas de texto y campos externos](TEXT.es.md) para fuentes, negrita, alineación, ajuste y datos compuestos por una aplicación que lea Excel. `preview-text`/`print-text` reciben JSON externo y comparten el flujo de impresión/recuperación explicado aquí. Las imágenes siguen admitidas.
+
 El ancho cruza el cabezal. La altura sigue el movimiento del papel. `gap_mm` es la separación entre etiquetas precortadas y no forma parte de la altura. El valor inicial es ancho=50, alto=25, separación=2 mm: paso total de 27 mm. En papel continuo usa separación 0 y define deliberadamente la altura de cada segmento; no hay control de cortador.
 
 Cada imagen estática corresponde a una etiqueta. Se recomienda PNG; también se admiten formatos ráster estáticos decodificables por Pillow. La transparencia se convierte en blanco y se respeta la orientación EXIF. La imagen conserva su proporción, se ajusta al área disponible y pasa a blanco/negro por umbral. Usa texto y códigos de alto contraste; una vista previa no certifica la lectura de códigos. No se aceptan PDF, animaciones ni lenguajes de comandos de impresora.

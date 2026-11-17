@@ -1,7 +1,6 @@
 from __future__ import annotations
 
-from decimal import Decimal, ROUND_FLOOR
-import hashlib
+from decimal import Decimal
 from io import BytesIO
 from pathlib import Path
 from typing import Iterable
@@ -11,6 +10,8 @@ from PIL import Image, ImageOps
 from .codec import packet
 from .errors import ConfigurationError, GeometryError
 from .models import BatchPlan, Calibration, EncodedBatch, LabelInput, Media, PreparedLabel, PrintOptions, rounded
+from .raster import finish, geometry
+from .text import TextLabel, render_text_label
 
 MAX_LABELS = 500
 MAX_PAYLOAD_BYTES = 64 * 1024 * 1024
@@ -36,14 +37,8 @@ def _image(value) -> Image.Image:
 
 
 def _render(label: LabelInput, media: Media, calibration: Calibration) -> PreparedLabel:
-    if media.width_mm > calibration.configured_max_paper_width_mm:
-        raise GeometryError("Paper width exceeds the configured hardware limit")
+    width, height, margin, head_left = geometry(media, calibration)
     scale = Decimal(str(calibration.dots_per_mm))
-    width = min(int((Decimal(str(media.width_mm))*scale).to_integral_value(rounding=ROUND_FLOOR)), calibration.head_width_dots)
-    height = int((Decimal(str(media.height_mm))*scale).to_integral_value(rounding=ROUND_FLOOR))
-    margin = rounded(Decimal(str(calibration.margin_mm))*scale)
-    if min(width, height) < 1 or width <= 2*margin or height <= 2*margin:
-        raise GeometryError("Media is too small for the selected margins")
     try:
         source_image = _image(label.image)
     except (OSError, ValueError) as error:
@@ -55,45 +50,29 @@ def _render(label: LabelInput, media: Media, calibration: Calibration) -> Prepar
     y = (height-fitted.height)//2 + rounded(Decimal(str(calibration.offset_y_mm))*scale)
     if x < 0 or y < 0 or x+fitted.width > width or y+fitted.height > height:
         raise GeometryError("Calibration would clip the image; adjust offsets or margins")
-    head_left = (calibration.head_width_dots-width)//2
     canvas = Image.new("L", (calibration.head_width_dots, height), 255)
     canvas.paste(fitted, (head_left+x, y))
-    canvas = canvas.point(lambda value: 0 if value < calibration.threshold else 255)
-    pixels = canvas.tobytes()
-    row_bytes = calibration.head_width_dots//8
-    rows = []
-    for row in range(height):
-        packed = bytearray(row_bytes)
-        for col, value in enumerate(pixels[row*calibration.head_width_dots:(row+1)*calibration.head_width_dots]):
-            if value == 0:
-                packed[col//8] |= 1 << (col % 8)
-        rows.append(bytes(packed))
-    while rows and not any(rows[-1]):
-        rows.pop()
-    output = BytesIO()
-    canvas.save(output, format="PNG", dpi=(calibration.dots_per_mm*25.4,)*2)
-    return PreparedLabel(label.label_id, tuple(rows), output.getvalue(), canvas.width, canvas.height,
-                         (head_left+x, y, fitted.width, fitted.height), hashlib.sha256(pixels).hexdigest())
+    return finish(canvas, label.label_id, (head_left+x, y, fitted.width, fitted.height), calibration)
 
 
 def prepare_batch(images: Iterable, media: Media | None = None, *, calibration: Calibration | None = None,
                   options: PrintOptions | None = None) -> BatchPlan:
     """Pure preparation: no Bluetooth, file journal or paper movement."""
     media, calibration, options = media or Media(), calibration or Calibration(), options or PrintOptions()
-    if isinstance(images, (str, bytes, Path, Image.Image)):
+    if isinstance(images, (str, bytes, Path, Image.Image, TextLabel)):
         raise ConfigurationError("Pass a sequence of images, not a single image/path")
     labels = []
     estimated_bytes = 0
     for index, source in enumerate(images):
         if index >= MAX_LABELS:
             raise ConfigurationError(f"At most {MAX_LABELS} labels per batch")
-        if isinstance(source, LabelInput):
+        if isinstance(source, (LabelInput, TextLabel)):
             label = source
         else:
             label = LabelInput(source, Path(source).name if isinstance(source, (str, Path)) else str(index+1))
         if not isinstance(label.label_id, str) or not label.label_id.strip() or len(label.label_id) > 256:
             raise ConfigurationError("Each label needs a nonempty label_id of at most 256 characters")
-        rendered = _render(label, media, calibration)
+        rendered = render_text_label(label, media, calibration) if isinstance(label, TextLabel) else _render(label, media, calibration)
         estimated_bytes += len(rendered.rows)*56+10
         if estimated_bytes > MAX_PAYLOAD_BYTES:
             raise ConfigurationError("Prepared batch exceeds the 64 MiB wire limit")

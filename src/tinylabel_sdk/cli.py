@@ -6,24 +6,27 @@ import json
 import sys
 
 from .client import LabelPrinter
-from .errors import LabelSDKError
 from .journal import Journal
 from .models import Calibration, DrainPolicy, Media, PrintOptions, load_profile
 from .planner import prepare_batch
+from .text import load_text_labels, prepare_text_batch
 
 
 def _parser():
     parser = argparse.ArgumentParser(prog="tinylabel")
     commands = parser.add_subparsers(dest="command", required=True)
-    for name in ("preview", "print"):
+    for name in ("preview", "print", "preview-text", "print-text"):
         command = commands.add_parser(name)
-        command.add_argument("images", nargs="+")
+        if name.endswith("-text"):
+            command.add_argument("text_json", help="External text labels JSON; no spreadsheet import")
+        else:
+            command.add_argument("images", nargs="+")
         command.add_argument("--profile")
         command.add_argument("--width-mm", type=float)
         command.add_argument("--height-mm", type=float)
         command.add_argument("--gap-mm", type=float)
         command.add_argument("--darkness", type=int)
-        if name == "preview":
+        if name.startswith("preview"):
             command.add_argument("--out", required=True)
         else:
             command.add_argument("--target", required=True)
@@ -51,7 +54,11 @@ def _plan(args):
     media = replace(media, **changes)
     if args.darkness is not None:
         options = replace(options, darkness=args.darkness)
-    return prepare_batch(args.images, media, calibration=calibration, options=options), drain
+    if args.command.endswith("-text"):
+        plan = prepare_text_batch(load_text_labels(args.text_json), media, calibration=calibration, options=options)
+    else:
+        plan = prepare_batch(args.images, media, calibration=calibration, options=options)
+    return plan, drain
 
 
 async def _print(args, plan, drain):
@@ -63,13 +70,13 @@ async def _print(args, plan, drain):
 def main(argv=None):
     parser = _parser()
     args = parser.parse_args(argv)
-    if args.command == "print" and not args.aligned:
+    if args.command in ("print", "print-text") and not args.aligned:
         parser.error("--aligned is required after the operator confirms the physical origin; no paper was moved")
     try:
-        if args.command == "preview":
+        if args.command in ("preview", "preview-text"):
             plan, _ = _plan(args)
             result = dict(plan.summary(), previews=[str(path) for path in plan.save_previews(args.out)], printed=False)
-        elif args.command == "print":
+        elif args.command in ("print", "print-text"):
             plan, drain = _plan(args)
             result = asyncio.run(_print(args, plan, drain))
         elif args.command == "inspect":
@@ -83,10 +90,11 @@ def main(argv=None):
         else:
             result = Journal(args.journal).confirm(args.job_id, printed_label_ids=args.label_id,
                 alignment_ok=args.alignment_ok, note=args.note).to_dict()
-        print(json.dumps(result, ensure_ascii=False, allow_nan=False))
+        # ASCII-safe JSON survives Windows console/pipe code pages unchanged.
+        print(json.dumps(result, ensure_ascii=True, allow_nan=False))
         return 0
     except Exception as error:
-        print(json.dumps({"error": type(error).__name__, "message": str(error)}, ensure_ascii=False), file=sys.stderr)
+        print(json.dumps({"error": type(error).__name__, "message": str(error)}, ensure_ascii=True), file=sys.stderr)
         return 2
 
 

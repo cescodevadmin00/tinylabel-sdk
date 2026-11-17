@@ -11,10 +11,12 @@ python -m pip install -e . build
 python -m unittest discover -s tests -v
 python scripts/check_docs.py
 python -m build
-python scripts/check_wheel.py dist/tinylabel_sdk-0.1.0-py3-none-any.whl
+python scripts/check_wheel.py dist/tinylabel_sdk-0.2.0-py3-none-any.whl
 ```
 
 Tests and CI must never connect to hardware or print automatically. Changes to movement, session lifecycle, flow control or retry behavior need meaningful simulated tests and an explicit hardware evidence note. Preserve stable IDs, the shared printer lock and unconfirmed delivery semantics. Keep English and Spanish manuals consistent.
+
+Text changes must cover accented glyphs, wrapping, overflow/minimum font size, calibration and mixed image/text pitch. Keep bundled font checksums and OFL attribution intact. Spreadsheet parsing belongs to the host application.
 
 Do not edit vendored upstream files casually. Update their pinned revision, NOTICE and provenance if changing the snapshot, and document any modifications. New printer support needs a model-specific adapter and hardware evidence; do not advertise the whole upstream catalog.
 

@@ -29,6 +29,8 @@ Se requiere Python >=3.10. CI ejecuta pruebas de software en Windows/Linux y ver
 
 ## Media / Papel
 
+Version 0.2.0 adds rasterized text and external fields; it does not add printer models or transports. Image and text plans use the same calibrated physical canvas/pitch. / La versión 0.2.0 incorpora texto renderizado y campos externos; no amplía modelos ni transportes. Comparte lienzo y paso físico con imágenes.
+
 - Initial profile / Perfil inicial: **50 × 25 mm**, **2 mm gap / separación**, **5/5 darkness / oscuridad**.
 - Native head / Cabezal: **384 dots / puntos**. Initial calibration / Calibración inicial: **8 dots/mm**, **8 motion units/mm**. A 50 mm roll does not imply 400 printable dots; the head remains 384 dots wide / Un rollo de 50 mm no implica 400 puntos imprimibles; el cabezal mantiene 384.
 - Configured nominal width limit / Límite nominal configurado: **50 mm**. This is an application limit, not a verified specification for every U1 variant / Es un límite de configuración, no una especificación verificada de todas las variantes U1.

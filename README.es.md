@@ -4,11 +4,13 @@
 [![Python](https://img.shields.io/badge/python-3.10%2B-blue)](pyproject.toml)
 [![Licencia](https://img.shields.io/badge/license-Apache--2.0-blue)](LICENSE)
 
-**Impresión local de etiquetas para U1: tamaños configurables, lotes continuos y registro persistente de trabajos.**
+**Impresión local de imágenes y texto para U1: diseños configurables, lotes continuos y registro persistente de trabajos.**
 
 [English](README.md) · [Manual de usuario](docs/USER_GUIDE.es.md) · [Integración para agentes](docs/INTEGRATION.es.md) · [Compatibilidad](docs/COMPATIBILITY.md)
 
-TinyLabel transforma imágenes en etiquetas monocromáticas y las envía en una sesión Bluetooth continua. Ofrece API asíncrona de Python, CLI con salida JSON, vistas previas, protección contra trabajos duplicados, control de flujo y confirmación física explícita.
+TinyLabel transforma imágenes y texto configurable en etiquetas monocromáticas y las envía en una sesión Bluetooth continua. Ofrece API asíncrona de Python, CLI con salida JSON, vistas previas, protección contra trabajos duplicados, control de flujo y confirmación física explícita.
+
+**Nuevo en 0.2.0:** bloques de texto, fuentes normales/negritas, ajuste de líneas, alineación, reducción opcional, campos externos y trabajos JSON. Tu aplicación puede leer Excel y componer cadenas fuera del SDK; el SDK no importa hojas de cálculo. Consulta el [manual de texto](docs/TEXT.es.md).
 
 **Estado: experimental / alfa.** El adaptador actual admite **U1 mediante Bluetooth Classic/SPP**, con cabezal de 384 puntos. Las pruebas anteriores con U1 permitieron ajustar un diseño de 50 × 25 mm; en un lote posterior del programa anterior faltó la última etiqueta y se perdió la alineación. Este SDK modifica el cierre y la espera, pero su ciclo completo todavía requiere validación física. Un envío correcto devuelve `transmitted_unconfirmed`; no demuestra que hayan salido todas las etiquetas. Consulta la [evidencia física](docs/HARDWARE.md).
 
@@ -17,13 +19,13 @@ TinyLabel transforma imágenes en etiquetas monocromáticas y las envía en una 
 Requiere Python 3.10 o superior y adaptador Bluetooth Classic para imprimir. Windows es la plataforma principal. Descarga el wheel desde [Releases](https://github.com/cescodevadmin00/tinylabel-sdk/releases):
 
 ```powershell
-python -m pip install .\tinylabel_sdk-0.1.0-py3-none-any.whl
+python -m pip install .\tinylabel_sdk-0.2.0-py3-none-any.whl
 ```
 
 También puedes instalar la versión fijada del código fuente:
 
 ```shell
-python -m pip install "git+https://github.com/cescodevadmin00/tinylabel-sdk.git@v0.1.0"
+python -m pip install "git+https://github.com/cescodevadmin00/tinylabel-sdk.git@v0.2.0"
 ```
 
 El proyecto todavía no se distribuye en PyPI. Para desarrollo, clona el repositorio y ejecuta `python -m pip install -e .`.
@@ -72,6 +74,24 @@ asyncio.run(main())
 
 En un sistema de gestión de etiquetas, conserva un proceso y una sesión por impresora. Envía los lotes sucesivos por esa sesión, sin reiniciar el modo entre etiquetas. El [manual de integración](docs/INTEGRATION.es.md) explica recuperación, cancelación, dimensiones y conexión desde Node.js.
 
+## Texto compuesto desde tu aplicación
+
+```python
+from tinylabel_sdk import TextLabel, TextStyle, format_text, prepare_text_batch
+
+campos = {"producto": "Café molido", "precio": "USD 7,82", "lote": "0017"}
+label = TextLabel.from_text(
+    format_text("{producto}\n{precio}\nLote: {lote}", campos),
+    label_id="producto-0017", style=TextStyle(font_size_mm=3, align="center"),
+)
+plan = prepare_text_batch([label])
+plan.save_previews("preview-text")
+# Usar el mismo printer.print_batch(plan, job_id=...) del ejemplo anterior.
+```
+
+También puedes previsualizar JSON externo: `tinylabel preview-text examples/text_labels.json --out preview-text`.
+El [manual de texto y campos](docs/TEXT.es.md) explica bloques con distintos estilos, ajustes, impresión CLI y la integración con aplicaciones que leen Excel.
+
 ## Alcance
 
 | Función | Estado actual |
@@ -79,6 +99,7 @@ En un sistema de gestión de etiquetas, conserva un proceso y una sesión por im
 | U1 / protocolo Tiny por Bluetooth Classic | Implementado; validación física integral del SDK pendiente |
 | 50 × 25 mm y separación de 2 mm | Perfil inicial basado en pruebas previas |
 | Otros tamaños | Configurables; necesitan calibración y comprobación física |
+| Texto y campos externos | Ráster nativo, Noto Sans normal/negrita, mismo paso que imágenes |
 | Otros modelos de TiMini-Print | No habilitados en este SDK |
 | PDF, ZPL, ESC/POS, USB, Wi-Fi o impresoras solo BLE | No expuestos por este SDK |
 | Detección automática de separación / origen | No implementada |
@@ -90,10 +111,11 @@ El catálogo incluido de TiMini-Print contiene otros modelos, pero eso **no** am
 
 - [Manual de usuario en español](docs/USER_GUIDE.es.md) / [English user manual](docs/USER_GUIDE.en.md).
 - [Integración para agentes y aplicaciones](docs/INTEGRATION.es.md) / [English integration guide](docs/INTEGRATION.en.md).
+- [Texto y campos externos](docs/TEXT.es.md) / [English text guide](docs/TEXT.en.md).
 - [Compatibilidad](docs/COMPATIBILITY.md), [evidencia física](docs/HARDWARE.md), [contribuciones](CONTRIBUTING.md).
 
 Pruebas: `python -m unittest discover -s tests -v`. Usan imágenes sintéticas y transportes simulados, sin gastar etiquetas. Compilación: `python -m pip install build` y `python -m build`.
 
 ## Licencia y reconocimiento
 
-Apache-2.0. Incluye una copia sin cambios de algoritmos de [TiMini-Print](https://github.com/Dejniel/TiMini-Print), de Daniel Banecki, dentro de un espacio de nombres privado. La revisión, licencia y avisos están incluidos en el paquete: [NOTICE](NOTICE), [LICENSE](LICENSE), [metadatos originales](src/tinylabel_sdk/_vendor/UPSTREAM.json). TinyLabel es un proyecto de integración independiente.
+Código: Apache-2.0. Incluye una copia sin cambios de algoritmos de [TiMini-Print](https://github.com/Dejniel/TiMini-Print), de Daniel Banecki, dentro de un espacio de nombres privado. Las fuentes Noto Sans incluidas usan [OFL-1.1](src/tinylabel_sdk/fonts/OFL.txt), con [procedencia documentada](src/tinylabel_sdk/fonts/UPSTREAM.json). Revisión, licencias y avisos: [NOTICE](NOTICE), [LICENSE](LICENSE), [metadatos originales](src/tinylabel_sdk/_vendor/UPSTREAM.json). TinyLabel es un proyecto de integración independiente.

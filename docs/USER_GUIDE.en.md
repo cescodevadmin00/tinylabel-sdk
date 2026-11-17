@@ -10,6 +10,8 @@ The current release is experimental. Read [compatibility](COMPATIBILITY.md) and 
 
 ## 2. Choose media and artwork
 
+**Text in 0.2.0:** use [text labels and external fields](TEXT.en.md) for configured fonts, bold, alignment, wrapping, fit policies and data composed by an Excel-reading application. `preview-text`/`print-text` take external JSON; they share the printing and recovery workflow below. Images remain supported unchanged.
+
 Width runs across the print head. Height runs along paper travel. `gap_mm` is the blank separation between die-cut labels, not part of label height. The default is width=50, height=25, gap=2 mm, giving a 27 mm pitch. For continuous paper set the gap to 0 and define a deliberate pitch through label height; there is no cutter control.
 
 One static image is one label. PNG is recommended; other static raster formats supported by Pillow can be decoded. Transparent pixels become white. EXIF orientation is applied. The image keeps its aspect ratio, fits inside the available area, and is thresholded to black/white. Text and barcodes should be high contrast; previews cannot certify barcode readability. PDFs, animated images, and printer command languages are not inputs.

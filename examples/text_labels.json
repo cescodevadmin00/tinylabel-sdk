@@ -1,0 +1,21 @@
+{
+  "schema": 1,
+  "labels": [
+    {
+      "label_id": "product-001",
+      "fields": {"name": "Café molido", "price": "USD 7,82", "lot": "0017", "date": "2026-11-17"},
+      "vertical_align": "center",
+      "overflow": "error",
+      "blocks": [
+        {"template": "{name}", "style": {"font_size_mm": 3.5, "align": "center", "bold": true}, "gap_after_mm": 0.5},
+        {"template": "Precio: {price}\nLote: {lot} · {date}", "style": {"font_size_mm": 2.5, "align": "left", "line_spacing_mm": 0.5}}
+      ]
+    },
+    {
+      "label_id": "product-002",
+      "text": "Etiqueta de texto\nSegunda muestra\nCódigo 0002",
+      "style": {"font_size_mm": 3, "align": "center"},
+      "vertical_align": "center"
+    }
+  ]
+}

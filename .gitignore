@@ -5,6 +5,7 @@ build/
 .venv/
 dist/
 preview/
+preview-text/
 .label-jobs/
 *.sqlite3*
 *.lock

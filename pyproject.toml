@@ -4,12 +4,12 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "tinylabel-sdk"
-version = "0.1.0"
-description = "Local U1 label printing SDK with configurable media, continuous batches, and durable job receipts"
+version = "0.2.0"
+description = "U1 label printing SDK for images and configurable text, with continuous batches and durable job receipts"
 readme = "README.md"
 requires-python = ">=3.10"
-license = "Apache-2.0"
-license-files = ["LICENSE", "NOTICE"]
+license = "Apache-2.0 AND OFL-1.1"
+license-files = ["LICENSE", "NOTICE", "src/tinylabel_sdk/fonts/OFL.txt"]
 keywords = ["thermal-printer", "labels", "bluetooth", "u1", "sdk"]
 classifiers = [
   "Development Status :: 3 - Alpha",
@@ -41,6 +41,6 @@ Source = "https://github.com/cescodevadmin00/tinylabel-sdk"
 where = ["src"]
 
 [tool.setuptools.package-data]
-"tinylabel_sdk" = ["py.typed"]
+"tinylabel_sdk" = ["py.typed", "fonts/*.ttf", "fonts/*.txt", "fonts/*.json"]
 "tinylabel_sdk._vendor" = ["LICENSE", "NOTICE", "UPSTREAM.json"]
 "tinylabel_sdk._vendor.timiniprint" = ["data/*.json"]

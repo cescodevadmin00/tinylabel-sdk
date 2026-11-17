@@ -9,3 +9,10 @@ The upstream Python sources and JSON catalog are bundled without algorithm
 changes inside the private namespace tinylabel_sdk._vendor.timiniprint.
 SDK orchestration, rendering, receipt journal and public API are separate.
 Third-party dependencies retain their own licenses and are installed by pip.
+
+Includes unmodified Noto Sans Regular and Bold fonts by the Noto Project.
+Copyright notices are retained in OFL.txt and the embedded font metadata.
+Licensed under SIL Open Font License 1.1.
+Source: https://github.com/notofonts/noto-fonts
+Revision: ffebf8c1ee449e544955a7e813c54f9b73848eac.
+See tinylabel_sdk/fonts/OFL.txt and fonts/UPSTREAM.json for provenance.

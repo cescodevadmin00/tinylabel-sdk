@@ -4,6 +4,14 @@
 
 Este documento sirve como instrucción de implementación para un agente que integre TinyLabel en un sistema de gestión de etiquetas. Conserva las plantillas, reglas de inventario y permisos en la aplicación principal. Usa el SDK para preparar imágenes, mantener una conexión y registrar intentos de impresión. El adaptador actual es únicamente U1 por Bluetooth Classic; consulta [compatibilidad](COMPATIBILITY.md).
 
+## Integración de texto añadida en 0.2.0
+
+La aplicación lee Excel externamente, normaliza valores a cadenas y crea objetos `TextLabel`/`TextBlock`, para ejecutar `prepare_text_batch`. También puede componer toda la cadena fuera. `format_text` es un ayudante opcional de sustitución plana; no lee hojas ni evalúa expresiones. Conserva en la aplicación ceros iniciales, formato de moneda/fecha y política de vacíos. Consulta la [guía completa](TEXT.es.md) y el [ejemplo de campos externos](../examples/text_from_fields.py).
+
+Entrega el `BatchPlan` al mismo `LabelPrinter.print_batch` persistente; no crees otra conexión ni reinicies para imprimir texto. Para contenido mixto, `prepare_batch` acepta `TextLabel` y `LabelInput`. El texto comparte calibración/paso con imágenes y calcula avance según sus filas reales. No fijes conteos de filas de imágenes para textos. La CLI dispone de `preview-text`/`print-text` con el [ejemplo JSON](../examples/text_labels.json).
+
+Antes de enviar, comprueba que todo cabe, revisa `text_layout` y las vistas previas, y conserva definición inmutable y versiones de fuentes en la auditoría. El registro no guarda texto fuente. Por defecto el desbordamiento se rechaza; `shrink` explícito respeta un mínimo. Campos faltantes, fuentes inválidas y texto desbordado deben informarse antes de conectar. Las pruebas de texto y regresión de imágenes corren juntas; sigue siendo necesaria la aceptación física.
+
 ## Arquitectura y control
 
 ```mermaid
