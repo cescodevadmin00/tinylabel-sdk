@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools>=77", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tinylabel-sdk"
+version = "0.1.0"
+description = "Local U1 label printing SDK with configurable media, continuous batches, and durable job receipts"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "Apache-2.0"
+license-files = ["LICENSE", "NOTICE"]
+keywords = ["thermal-printer", "labels", "bluetooth", "u1", "sdk"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Operating System :: Microsoft :: Windows",
+  "Topic :: Printing",
+]
+dependencies = [
+  "Pillow>=10.1,<14", "bleak>=0.22,<4", "crc8>=0.2,<1",
+  "pyserial>=3.5,<4", "platformdirs>=4,<5", "packaging>=21,<27",
+  "winsdk>=1.0.0b10; sys_platform == 'win32'",
+  "pyobjc-framework-IOBluetooth>=10; sys_platform == 'darwin'",
+]
+
+[project.scripts]
+tinylabel = "tinylabel_sdk.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/cescodevadmin00/tinylabel-sdk"
+Documentation = "https://github.com/cescodevadmin00/tinylabel-sdk/tree/main/docs"
+Issues = "https://github.com/cescodevadmin00/tinylabel-sdk/issues"
+Source = "https://github.com/cescodevadmin00/tinylabel-sdk"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"tinylabel_sdk" = ["py.typed"]
+"tinylabel_sdk._vendor" = ["LICENSE", "NOTICE", "UPSTREAM.json"]
+"tinylabel_sdk._vendor.timiniprint" = ["data/*.json"]

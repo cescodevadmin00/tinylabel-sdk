@@ -1,0 +1,6 @@
+include LICENSE NOTICE CHANGELOG.md README.es.md CONTRIBUTING.md SECURITY.md
+recursive-include docs *.md
+recursive-include examples *.py *.js
+recursive-include profiles *.json
+recursive-include tests *.py
+recursive-include scripts *.py

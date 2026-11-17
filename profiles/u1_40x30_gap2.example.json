@@ -1,0 +1,9 @@
+{
+  "schema": 1,
+  "media": {"width_mm": 40, "height_mm": 30, "gap_mm": 2},
+  "calibration": {"dots_per_mm": 8, "motion_units_per_mm": 8, "row_motion_units": 1,
+    "head_width_dots": 384, "configured_max_paper_width_mm": 50, "margin_mm": 2,
+    "offset_x_mm": 2, "offset_y_mm": -0.25, "threshold": 128},
+  "options": {"darkness": 5, "energy": 8000, "speed": 10},
+  "evidence": {"hardware_verified": false, "note": "Example size; align and validate first/last on the actual roll."}
+}

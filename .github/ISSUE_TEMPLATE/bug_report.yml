@@ -1,0 +1,28 @@
+name: Bug report / Reportar problema
+description: Reproducible SDK issue; redact private data / Oculta datos privados
+body:
+  - type: textarea
+    id: behavior
+    attributes:
+      label: Expected and observed behavior / Resultado esperado y observado
+      description: Distinguish sent bytes from physically printed labels.
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: SDK, Python, OS, model, firmware, transport, media dimensions
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal reproduction / Reproducción mínima
+      description: Synthetic images only. No addresses, secrets, customer labels or business IDs.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Receipt state and physical evidence / Estado y observación física
+      description: Redact identifiers; include first/last placement and final paper position when relevant.

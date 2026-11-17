@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+build/
+*.egg-info/
+.venv/
+dist/
+preview/
+.label-jobs/
+*.sqlite3*
+*.lock
+.env
+.env.*
+!.env.example
+validation/
