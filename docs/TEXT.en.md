@@ -8,7 +8,7 @@ Version 0.2.0 adds configurable text labels. Your application may obtain values 
 
 Text is rasterized at the printer's native dot scale and uses the same physical canvas, margins, calibration, threshold, row packing, pitch calculation, session and job journal as image labels. Text is not sent through an unverified printer-native font command. Image and text labels can share one continuous batch/session.
 
-The existing U1/Classic compatibility and experimental hardware status remain unchanged. No physical printing was performed to validate this feature; preview and transport tests do not prove paper registration. See [hardware evidence](HARDWARE.md).
+U1/Classic compatibility and experimental status remain unchanged. After the 0.2.0 release, a single text proof and a five-label batch with externally composed logo/fields were accepted on this U1/Windows setup, using 50 × 25 mm media with a 2 mm gap. Longer runs, other sizes and final roll origin remain unverified. See [hardware evidence](HARDWARE.md).
 
 ## A single configured text label
 

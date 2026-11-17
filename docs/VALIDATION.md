@@ -20,6 +20,6 @@ The local source images and generated previews are excluded from the public repo
 
 Las imágenes locales y sus vistas previas quedan fuera del repositorio público y distribuciones. Las pruebas usan arte sintético. CI ejecuta verificaciones en Windows/Linux con Python 3.10 y 3.12; consulta Actions para conocer los resultados reales.
 
-**No physical printing was performed for this SDK release validation.** Completion of the last label, final paper registration, alternative roll sizes and long physical batches remain acceptance work. See [hardware evidence](HARDWARE.md).
+**No physical printing was performed during package creation.** In subsequent testing on 2026-11-17, the operator accepted single text/mixed proofs and all five consecutive mixed labels on one U1/Windows setup with 50 × 25 mm media and a 2 mm gap. The host application composed fixed artwork and external fields before passing them to the SDK. Final roll origin, alternative media and long physical batches remain unverified. See [hardware evidence](HARDWARE.md).
 
-**Esta validación del SDK no imprimió papel.** La salida de la última etiqueta, posición final, tamaños alternativos y lotes físicos largos siguen pendientes de aceptación. Consulta la [evidencia física](HARDWARE.md).
+**La creación del paquete no imprimió papel.** En pruebas posteriores del 17/11/2026, el operador aceptó pruebas individuales de texto/mixtas y las cinco etiquetas consecutivas, en una U1/Windows con papel de 50 × 25 mm y separación de 2 mm. La aplicación externa compuso recursos fijos y campos antes de entregarlos al SDK. El origen final del rollo, otros tamaños y lotes largos siguen sin verificar. Consulta la [evidencia física](HARDWARE.md).

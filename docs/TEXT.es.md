@@ -8,7 +8,7 @@ La versión 0.2.0 añade etiquetas de texto configurables. Tu aplicación puede 
 
 El texto se convierte en ráster a la escala nativa y comparte con las imágenes el lienzo físico, márgenes, calibración, umbral, empaquetado de filas, paso, sesión y registro. No se envían comandos de fuentes nativas de la impresora sin verificar. Textos e imágenes pueden compartir un lote y sesión continuos.
 
-Se mantienen la compatibilidad U1/Classic y el estado experimental del hardware. Esta función se validó sin imprimir papel; las vistas previas y transportes simulados no demuestran alineación física. Consulta [evidencia física](HARDWARE.md).
+Se mantienen la compatibilidad U1/Classic y el estado experimental. Después de publicar 0.2.0 se aceptaron una prueba individual de texto y un lote de cinco etiquetas con logo/campos compuestos externamente, en esta U1/Windows con papel de 50 × 25 mm y separación de 2 mm. Los lotes largos, otros tamaños y el origen final del rollo siguen pendientes. Consulta [evidencia física](HARDWARE.md).
 
 ## Una etiqueta configurada
 

@@ -10,5 +10,11 @@
   "evidence": {"geometry_confirmed_by_operator": true, "verified_geometry_batch_count": 5,
     "legacy_eight_label_run": "operator reported the last label missing and final paper displacement",
     "new_sdk_end_lifecycle_verified_on_hardware": false,
+    "sdk_short_batch_operator_confirmed": true,
+    "sdk_short_batch_count": 5,
+    "sdk_short_batch_date": "2026-11-17",
+    "sdk_short_batch_output_and_placement_confirmed": true,
+    "sdk_final_roll_origin_verified": false,
+    "sdk_long_batch_verified": false,
     "note": "No automatic ejection or final A3. Physical completion is always unconfirmed until observed."}
 }

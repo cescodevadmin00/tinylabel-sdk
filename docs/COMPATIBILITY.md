@@ -4,7 +4,7 @@
 
 | Model / Modelo | Transport / Transporte | SDK status / Estado |
 | --- | --- | --- |
-| **U1**, advertised as `U1-…`, TiMini model key `u1` | Bluetooth Classic / SPP | Implemented; full SDK hardware acceptance pending / Implementado; aceptación física integral pendiente |
+| **U1**, advertised as `U1-…`, TiMini model key `u1` | Bluetooth Classic / SPP | One five-label batch accepted on one Windows setup, 50 × 25 mm + 2 mm gap; broader acceptance pending / Lote de cinco aceptado en una U1/Windows, 50 × 25 mm + 2 mm; validación ampliada pendiente |
 | Other printers using the Tiny protocol / Otras impresoras con protocolo Tiny | Any / Cualquiera | Not enabled; an identical protocol family does not establish model compatibility / No habilitadas; compartir protocolo no demuestra compatibilidad |
 | Other TiMini-Print models, including other protocol families / Otros modelos y familias de TiMini-Print | Any / Cualquiera | Not supported by the public SDK adapter / No compatibles con el adaptador público actual |
 | BLE-only, USB, Wi-Fi, ESC/POS or ZPL devices | Those interfaces / Esas interfaces | Not implemented / No implementadas |
@@ -17,7 +17,7 @@ El adaptador exige coincidencia exacta de nombre/dirección y modelo detectado `
 
 | Platform / Plataforma | Status / Estado |
 | --- | --- |
-| Windows + Classic Bluetooth adapter | Primary development environment; earlier U1 transport trials successful; new SDK lifecycle not yet physically validated / Entorno principal; conexión previa U1 comprobada; ciclo nuevo pendiente de validar físicamente |
+| Windows + Classic Bluetooth adapter | Primary environment; single text/mixed proofs and a five-label mixed batch accepted / Entorno principal; pruebas individuales de texto/mixtas y lote mixto de cinco aceptados |
 | Linux | Upstream backend included; SDK hardware untested / Backend incluido; sin pruebas físicas del SDK |
 | macOS | Upstream backend and conditional dependency included; SDK hardware untested / Backend y dependencia incluidos; sin pruebas físicas del SDK |
 | Browser, Android, iOS | No native client; use a local Python worker / Sin cliente nativo; integrar mediante proceso local Python |

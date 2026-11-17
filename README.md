@@ -12,7 +12,7 @@ TinyLabel turns images and configurable text into monochrome label plans and sen
 
 **New in 0.2.0:** text blocks, regular/bold fonts, wrapping, alignment, optional size reduction, external fields and JSON text jobs. Your application can read Excel and compose strings externally; the SDK does not import spreadsheets. Read the [text manual](docs/TEXT.en.md).
 
-**Release status: experimental / alpha.** The current adapter targets **U1 over Bluetooth Classic/SPP**, using a 384-dot print head. Earlier U1 hardware trials established a useful 50 × 25 mm layout, but a later legacy batch missed its final label and lost alignment. The SDK changes session ending and waiting behavior; its complete lifecycle still needs hardware acceptance testing. A successful send returns `transmitted_unconfirmed`, never a claim that every label physically printed. See [hardware evidence](docs/HARDWARE.md).
+**Release status: experimental / alpha.** The adapter targets **U1 over Bluetooth Classic/SPP**, with a 384-dot print head. On one U1/Windows setup, the operator accepted single text/logo proofs and **five consecutive mixed labels**, using 50 × 25 mm media, a 2 mm gap and darkness 5/5. Logo/field composition happened in the host application. Longer runs, other sizes and final roll origin remain unverified. Successful sends return `transmitted_unconfirmed` until physical observations are recorded. See [hardware evidence](docs/HARDWARE.md), including earlier incidents.
 
 ## Install
 
@@ -96,7 +96,7 @@ See [text configuration and fields](docs/TEXT.en.md) for multi-style blocks, fit
 
 | Capability | Current status |
 | --- | --- |
-| U1 / Tiny protocol, Classic Bluetooth | Implemented; end-to-end SDK hardware acceptance pending |
+| U1 / Tiny protocol, Classic Bluetooth | Single proofs and five-label batch accepted on one U1/Windows setup; broader acceptance pending |
 | 50 × 25 mm, 2 mm gap | Starting profile based on prior U1 trials |
 | Other roll dimensions | Configurable; require physical calibration and validation |
 | Text and externally composed fields | Native raster layout; bundled Noto Sans regular/bold; same pitch as images |

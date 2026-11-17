@@ -12,7 +12,7 @@ TinyLabel transforma imágenes y texto configurable en etiquetas monocromáticas
 
 **Nuevo en 0.2.0:** bloques de texto, fuentes normales/negritas, ajuste de líneas, alineación, reducción opcional, campos externos y trabajos JSON. Tu aplicación puede leer Excel y componer cadenas fuera del SDK; el SDK no importa hojas de cálculo. Consulta el [manual de texto](docs/TEXT.es.md).
 
-**Estado: experimental / alfa.** El adaptador actual admite **U1 mediante Bluetooth Classic/SPP**, con cabezal de 384 puntos. Las pruebas anteriores con U1 permitieron ajustar un diseño de 50 × 25 mm; en un lote posterior del programa anterior faltó la última etiqueta y se perdió la alineación. Este SDK modifica el cierre y la espera, pero su ciclo completo todavía requiere validación física. Un envío correcto devuelve `transmitted_unconfirmed`; no demuestra que hayan salido todas las etiquetas. Consulta la [evidencia física](docs/HARDWARE.md).
+**Estado: experimental / alfa.** El adaptador admite **U1 mediante Bluetooth Classic/SPP**, con cabezal de 384 puntos. En una U1/Windows, el operador aceptó pruebas individuales de texto/logo y **cinco etiquetas mixtas consecutivas**, con papel de 50 × 25 mm, separación de 2 mm y oscuridad 5/5. El logo/campos se compusieron en la aplicación externa. Lotes largos, otros tamaños y el origen final del rollo siguen pendientes de validar. Un envío correcto devuelve `transmitted_unconfirmed` hasta registrar la observación física. Consulta la [evidencia física](docs/HARDWARE.md), incluidos los incidentes anteriores.
 
 ## Instalación
 
@@ -96,7 +96,7 @@ El [manual de texto y campos](docs/TEXT.es.md) explica bloques con distintos est
 
 | Función | Estado actual |
 | --- | --- |
-| U1 / protocolo Tiny por Bluetooth Classic | Implementado; validación física integral del SDK pendiente |
+| U1 / protocolo Tiny por Bluetooth Classic | Pruebas individuales y lote de cinco aceptados en una U1/Windows; validación ampliada pendiente |
 | 50 × 25 mm y separación de 2 mm | Perfil inicial basado en pruebas previas |
 | Otros tamaños | Configurables; necesitan calibración y comprobación física |
 | Texto y campos externos | Ráster nativo, Noto Sans normal/negrita, mismo paso que imágenes |
